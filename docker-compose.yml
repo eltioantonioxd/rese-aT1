@@ -1,0 +1,24 @@
+version: '3.3'
+
+services:
+  app:
+    build: .
+    container_name: app_flask
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./public:/app
+
+  mysql:
+    image: 'mysql:5.7.13'
+    container_name: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      -  ./backend:/var/lib/mysql
+    env_file:
+      - common.env
