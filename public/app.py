@@ -52,9 +52,9 @@ def infoGame(id):
   dataGame = specificGame(id)
   comment = tableResena(id)
   if session['user']!=None:
-    return render_template("infoGame.html", dataGame = dataGame,comment=comment,user=session['user'])
+    return render_template("infoGame.html", dataGame = dataGame,comment=comment, session=session)
   else:
-    return render_template("infoGame.html", dataGame = dataGame,comment=comment)
+    return render_template("infoGame.html", dataGame = dataGame,comment=comment, session=session)
 
 #Insertar comentario
 @app.route('/<id>/comment', methods=['GET','POST'])
@@ -65,7 +65,7 @@ def resenaGame(id):
   mycursor.execute(sql, val)
   mydb.commit()
   print(mycursor.rowcount, "record inserted.")
-  return redirect(url_for('infoGame',id=id))
+  return redirect(url_for('infoGame',id=id, session=session))
 
 #Remover comentario
 @app.route('/<id>/<remove>',methods=['GET','POST'])
@@ -78,9 +78,9 @@ def eliminar(id,remove):
     mycursor.execute(sql, val)
     mydb.commit()
     print(mycursor.rowcount, "record(s) deleted")
-    return redirect(url_for('infoGame',id=id))
+    return redirect(url_for('infoGame',id=id, session=session))
   error = '<p>Usted no es propietario de esta resena</p>'
-  return redirect(url_for('infoGame',id=id))
+  return redirect(url_for('infoGame',id=id, session=session))
 
 #Registrar usuario
 @app.route('/register', methods=['GET', 'POST'])
@@ -96,8 +96,14 @@ def registerUser():
       val = (user, email, password)
       mycursor.execute(sql, val)
       mydb.commit()
+      
       session['user'] = email
-      return render_template("index.html", data=data, user = session['user'])
+      sqlUser = 'SELECT * FROM users WHERE email = %s'      
+      value = (email,)
+      mycursor.execute(sqlUser, value)
+      myresult = mycursor.fetchall()
+      session['id'] = myresult[0][0]
+      return render_template("index.html", data=data, session = session['user'])
 
 #Actualizar Reseña
 @app.route('/<id>/update/<id_resena>', methods=['GET', 'POST'])
@@ -110,9 +116,9 @@ def updateresena(id,id_resena):
       val = (resena, id_resena)
       mycursor.execute(sql, val)
       mydb.commit()
-      return redirect(url_for('infoGame',id=id))
+      return redirect(url_for('infoGame',id=id, session=session))
   else:
-    return redirect(url_for('infoGame',id=id))
+    return redirect(url_for('infoGame',id=id, session=session))
 
 #Métodos
 def uResena(id):
@@ -137,7 +143,7 @@ def tableResena(id):
   comment = []
   for i in myresult:
     if i[3]==int(id):
-      info = {'id_reseña': i[0], 'id_user': i[1], 'resena': i[2], 'id_juego': i[3], 'userComment': tableUser(i[1])}
+      info = {'id_reseña': i[0], 'id_user': int(i[1]), 'resena': i[2], 'id_juego': i[3], 'userComment': tableUser(i[1])}
       comment.append(info)
   return comment
 
