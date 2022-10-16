@@ -66,14 +66,45 @@ def resenaGame(id):
   print(mycursor.rowcount, "record inserted.")
   return redirect(url_for('infoGame',id=id))
 
+@app.route('/<id>/<remove>',methods=['GET','POST'])
+def eliminar(id,remove):
+  eliminar=uResena(remove)
+  print(eliminar)
+  if int(session['id'])==int(eliminar[1]):
+    sql = "DELETE FROM resenas WHERE id = %s"
+    val = (eliminar[0],)
+    mycursor.execute(sql, val)
+    mydb.commit()
+    print(mycursor.rowcount, "record(s) deleted")
+    return redirect(url_for('infoGame',id=id))
+  error = '<p>Usted no es propietario de esta resena</p>'
+  return redirect(url_for('infoGame',id=id))
+
 #Métodos
+def uResena(id):
+  mycursor.execute("SELECT * FROM resenas")
+  myresult = mycursor.fetchall()
+  for i in myresult:
+    if int(i[0])==int(id):
+      return i
+
+def tableUser(id_user):
+  mycursor.execute("SELECT * FROM users")
+  myresult = mycursor.fetchall()
+  userEmail = []
+  for i in myresult:
+    if i[0] == int(id_user):
+      userEmail = i[1]
+      return userEmail
+          
 def tableResena(id):
   mycursor.execute("SELECT * FROM resenas")
   myresult = mycursor.fetchall()
   comment = []
   for i in myresult:
     if i[3]==int(id):
-      comment.append(i)
+      info = {'id_reseña': i[0], 'id_user': i[1], 'resena': i[2], 'id_juego': i[3], 'userComment': tableUser(i[1])}
+      comment.append(info)
   return comment
 
 def specificGame(id):
