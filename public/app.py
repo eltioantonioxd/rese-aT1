@@ -13,9 +13,6 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
-
-
-  
 app = Flask(__name__)
 
 url = 'https://www.freetogame.com/api/games'
@@ -31,10 +28,6 @@ def index():
 @app.route('/login',  methods=['GET', 'POST'])
 def login():
   if request.method == 'POST':
-    #user = request.form['email']
-    #password = request.form['password']
-    
-    #print(user, password)
     mycursor.execute("SELECT * FROM users")
     myresult = mycursor.fetchall()
     for i in myresult:
@@ -44,8 +37,9 @@ def login():
         session['id']=i[0]
         return render_template("index.html", data=data, user=session['user'])
       else:
-          return '<h1> SSEXOOO </h1>'
-
+        error = '<p>Usuario y/o contraseña incorrecto</p>'
+        return render_template("index.html", data=data, error=error)
+      
 @app.route('/logout',  methods=['GET', 'POST'])
 def logout():
   session['user']=None
@@ -55,16 +49,8 @@ def logout():
 
 @app.route('/<id>', methods=['GET'])
 def infoGame(id):
-  dataGame = {}
-  for i in data:
-    if i['id'] == int(id):
-      dataGame = i
-  mycursor.execute("SELECT * FROM resenas")
-  myresult = mycursor.fetchall()
-  comment = []
-  for i in myresult:
-    if i[3]==int(id):
-      comment.append(i)
+  dataGame = specificGame(id)
+  comment = tableResena(id)
   if session['user']!=None:
     return render_template("infoGame.html", dataGame = dataGame,comment=comment,user=session['user'])
   else:
@@ -73,7 +59,6 @@ def infoGame(id):
 @app.route('/<id>/comment', methods=['GET','POST'])
 def resenaGame(id):
   resena = request.form['resena']
-  
   sql = "INSERT INTO resenas (id_user,resena,id_juego) VALUES (%s, %s,%s)"
   val = (session['id'], resena, id)
   mycursor.execute(sql, val)
@@ -81,6 +66,23 @@ def resenaGame(id):
   print(mycursor.rowcount, "record inserted.")
   return redirect(url_for('infoGame',id=id))
 
+#Métodos
+def tableResena(id):
+  mycursor.execute("SELECT * FROM resenas")
+  myresult = mycursor.fetchall()
+  comment = []
+  for i in myresult:
+    if i[3]==int(id):
+      comment.append(i)
+  return comment
+
+def specificGame(id):
+  dataGame = {}
+  for i in data:
+    if i['id'] == int(id):
+      dataGame = i
+  return dataGame
+  
 
 
 if __name__ == '__main__':
