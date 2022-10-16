@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,session
+from flask import Flask, render_template, request,session,redirect, url_for
 import requests
 import mysql.connector
 
@@ -73,19 +73,7 @@ def resenaGame(id):
   mycursor.execute(sql, val)
   mydb.commit()
   print(mycursor.rowcount, "record inserted.")
-  dataGame = {}
-  for i in data:
-    if i['id'] == int(id):
-      dataGame = i
-  mycursor.execute("SELECT * FROM resenas")
-  myresult = mycursor.fetchall()
-  comment = []
-  for i in myresult:
-    print('hola')
-    if i[3]==int(id):
-      comment.append(i)
-  print(comment)
-  return render_template("infoGame.html",dataGame = dataGame,comment=comment,user=session['user'])
+  return redirect(url_for('infoGame',id=id))
 
 
 
