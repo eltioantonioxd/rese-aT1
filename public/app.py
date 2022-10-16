@@ -1,3 +1,4 @@
+from crypt import methods
 from flask import Flask, render_template, request,session,redirect, url_for
 import requests
 import mysql.connector
@@ -23,7 +24,7 @@ app.secret_key = 'esto-es-una-clave-muy-secreta'
 
 @app.route("/")
 def index():
-    return render_template("index.html", data=data)
+    return render_template("index.html", data=data, user = session['user'])
   
 @app.route('/login',  methods=['GET', 'POST'])
 def login():
@@ -79,6 +80,22 @@ def eliminar(id,remove):
     return redirect(url_for('infoGame',id=id))
   error = '<p>Usted no es propietario de esta resena</p>'
   return redirect(url_for('infoGame',id=id))
+
+@app.route('/register', methods=['GET', 'POST'])
+def registerUser():
+  user = request.form['user']
+  email = request.form['email']
+  password = request.form['password']
+  password2 = request.form['password2']
+  if request.method == 'POST':
+    if password == password2:
+      mycursor = mydb.cursor()
+      sql = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
+      val = (user, email, password)
+      mycursor.execute(sql, val)
+      mydb.commit()
+      session['user'] = email
+      return render_template("index.html", data=data, user = session['user'])
 
 #Métodos
 def uResena(id):

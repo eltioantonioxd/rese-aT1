@@ -11,18 +11,21 @@
 </head>
 <body>
     <header class="container">
-        <nav class="navbar mb-5">
+        <nav class="navbar mb-5 ">
             <div class="container-fluid">
               <a class="navbar-brand">rGamesFree</a>
               <!-- Button trigger modal -->
               {%if user  %} 
                   {{user}}
-                  <button type="button" onclick="myFunction()" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  <button type="button" onclick="myFunction()" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Salir
                   </button>
                   {% else %}
                   <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Accede
+                  </button>
+                  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal2">
+                    Registrate
                   </button>
                {% endif %}
             
@@ -37,11 +40,11 @@
                     <div class="modal-body">
                         <form action='/login' method='POST'>
                             <div class="mb-3">
-                              <label for="exampleInputEmail1" class="form-label">Nombre de usuario / dirección de email</label>
+                              <label for="exampleInputEmail1" class="form-label">Correo electrónico:</label>
                               <input type="email" class="form-control" name="email" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
-                              <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+                              <label for="exampleInputPassword1" class="form-label">Contraseña:</label>
                               <input type="password" class="form-control" name="password">
                             </div>
                             <div class="modal-footer">
@@ -55,6 +58,45 @@
                 </div>
                 </div>
               </div>
+
+              <div class="modal fade" id="modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Bienvenido a rGamesFree</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action='/register' method='POST'>
+                            <div class="mb-3">
+                              <label for="exampleInputEmail1" class="form-label">Username:</label>
+                              <input type="text" class="form-control" name="user" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                              <label for="exampleInputEmail1" class="form-label">Correo electrónico:</label>
+                              <input type="email" class="form-control" name="email" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                              <label for="exampleInputPassword1" class="form-label">Contraseña:</label>
+                              <input type="password" class="form-control" name="password">
+                            </div>
+                            <div class="mb-3">
+                              <label for="exampleInputPassword1" class="form-label">Confirmar Contraseña:</label>
+                              <input type="password" class="form-control" name="password2">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-outline-success">Registrate</button>
+                                <!--Alert-->
+                            
+                            </div>
+                          </form>
+                    </div>
+                </div>
+                </div>
+              </div>
+
+
             </div>
           </nav>
     </header> 
