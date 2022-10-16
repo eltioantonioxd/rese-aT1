@@ -37,10 +37,8 @@ def login():
         session['password']=request.form['password']
         session['id']=i[0]
         return render_template("index.html", data=data, user=session['user'])
-      else:
-        error = '<p>Usuario y/o contraseña incorrecto</p>'
-        return render_template("index.html", data=data, error=error)
-      
+
+#Ingresar al sistema
 @app.route('/logout',  methods=['GET', 'POST'])
 def logout():
   session['user']=None
@@ -48,6 +46,7 @@ def logout():
   session['id']=None
   return redirect(url_for('index'))
 
+#Detalle del juego
 @app.route('/<id>', methods=['GET'])
 def infoGame(id):
   dataGame = specificGame(id)
@@ -57,6 +56,7 @@ def infoGame(id):
   else:
     return render_template("infoGame.html", dataGame = dataGame,comment=comment)
 
+#Insertar comentario
 @app.route('/<id>/comment', methods=['GET','POST'])
 def resenaGame(id):
   resena = request.form['resena']
@@ -67,6 +67,7 @@ def resenaGame(id):
   print(mycursor.rowcount, "record inserted.")
   return redirect(url_for('infoGame',id=id))
 
+#Remover comentario
 @app.route('/<id>/<remove>',methods=['GET','POST'])
 def eliminar(id,remove):
   eliminar=uResena(remove)
@@ -81,13 +82,14 @@ def eliminar(id,remove):
   error = '<p>Usted no es propietario de esta resena</p>'
   return redirect(url_for('infoGame',id=id))
 
+#Registrar usuario
 @app.route('/register', methods=['GET', 'POST'])
 def registerUser():
-  user = request.form['user']
-  email = request.form['email']
-  password = request.form['password']
-  password2 = request.form['password2']
   if request.method == 'POST':
+    user = request.form['user']
+    email = request.form['email']
+    password = request.form['password']
+    password2 = request.form['password2']
     if password == password2:
       mycursor = mydb.cursor()
       sql = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
@@ -96,6 +98,21 @@ def registerUser():
       mydb.commit()
       session['user'] = email
       return render_template("index.html", data=data, user = session['user'])
+
+#Actualizar Reseña
+@app.route('/<id>/update/<id_resena>', methods=['GET', 'POST'])
+def updateresena(id,id_resena):
+  resena = request.form['resena']
+  update=uResena(id_resena)
+  if update[1]!=None:
+    if int(session['id'])==int(update[1]):
+      sql = "UPDATE resenas SET resena=%s WHERE id=%s"
+      val = (resena, id_resena)
+      mycursor.execute(sql, val)
+      mydb.commit()
+      return redirect(url_for('infoGame',id=id))
+  else:
+    return redirect(url_for('infoGame',id=id))
 
 #Métodos
 def uResena(id):
