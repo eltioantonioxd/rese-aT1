@@ -46,23 +46,29 @@ def login():
       else:
           return '<h1> SSEXOOO </h1>'
 
+@app.route('/logout',  methods=['GET', 'POST'])
+def logout():
+  session['user']=None
+  session['password']=None
+  session['id']=None
+  return redirect(url_for('index'))
+
 @app.route('/<id>', methods=['GET'])
 def infoGame(id):
+  dataGame = {}
+  for i in data:
+    if i['id'] == int(id):
+      dataGame = i
+  mycursor.execute("SELECT * FROM resenas")
+  myresult = mycursor.fetchall()
+  comment = []
+  for i in myresult:
+    if i[3]==int(id):
+      comment.append(i)
   if session['user']!=None:
-    dataGame = {}
-    for i in data:
-      if i['id'] == int(id):
-        dataGame = i
-    mycursor.execute("SELECT * FROM resenas")
-    myresult = mycursor.fetchall()
-    comment = []
-    print(id)
-    for i in myresult:
-      if i[3]==int(id):
-        comment.append(i)
-        print('hola')
-    print(comment)
     return render_template("infoGame.html", dataGame = dataGame,comment=comment,user=session['user'])
+  else:
+    return render_template("infoGame.html", dataGame = dataGame,comment=comment)
 
 @app.route('/<id>/comment', methods=['GET','POST'])
 def resenaGame(id):
