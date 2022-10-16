@@ -15,8 +15,8 @@
             <div class="container-fluid">
               <a class="navbar-brand">rGamesFree</a>
               <!-- Button trigger modal -->
-              {%if session  %} 
-                  {{session}}
+              {%if session['user']  %} 
+                  {{session['user']}}
                   <button type="button" onclick="myFunction()" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Salir
                   </button>
