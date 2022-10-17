@@ -74,7 +74,7 @@ def resenaGame(id):
   return redirect(url_for('infoGame',id=id, session=session))
 
 #Remover comentario
-@app.route('/<id>/<remove>',methods=['GET','POST'])
+@app.route('/<id>/<remove>', methods=['GET','DELETE'])
 def eliminar(id,remove):
   eliminar=uResena(remove)
   print(eliminar)
@@ -124,7 +124,7 @@ def registerUser():
       return redirect(url_for('index'))
 
 #Actualizar Reseña
-@app.route('/<id>/update/<id_resena>', methods=['GET', 'POST'])
+@app.route('/<id>/update/<id_resena>', methods=['GET', 'POST', 'PUT'])
 def updateresena(id,id_resena):
   resena = request.form['resena']
   update=uResena(id_resena)
