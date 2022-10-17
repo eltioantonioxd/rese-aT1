@@ -13,6 +13,13 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
+mycursor = mydb.cursor()
+mycursor.execute("SELECT * FROM users")
+myresult = mycursor.fetchall()
+
+for x in myresult:
+  print(x[1])
+  
 app = Flask(__name__)
 
 url = 'https://www.freetogame.com/api/games'
