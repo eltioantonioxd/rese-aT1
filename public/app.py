@@ -103,7 +103,7 @@ def registerUser():
       mycursor.execute(sqlUser, value)
       myresult = mycursor.fetchall()
       session['id'] = myresult[0][0]
-      return render_template("index.html", data=data, session = session['user'])
+      return render_template("index.html", data=data, session = session)
 
 #Actualizar Reseña
 @app.route('/<id>/update/<id_resena>', methods=['GET', 'POST'])
