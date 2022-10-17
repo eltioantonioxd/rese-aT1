@@ -160,7 +160,7 @@ def tableResena(id):
   myresult = mycursor.fetchall()
   comment = []
   for i in myresult:
-    if i[3]==int(id):
+    if str(i[3]) ==(id):
       info = {'id_reseña': i[0], 'id_user': int(i[1]), 'resena': i[2], 'id_juego': i[3], 'userComment': tableUser(i[1])}
       comment.append(info)
   return comment
@@ -168,7 +168,7 @@ def tableResena(id):
 def specificGame(id):
   dataGame = {}
   for i in data:
-    if i['id'] == int(id):
+    if str(i['id']) == (id):
       dataGame = i
   return dataGame
   
