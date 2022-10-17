@@ -1,4 +1,3 @@
-from crypt import methods
 from flask import Flask, render_template, request,session,redirect, url_for
 import requests
 import mysql.connector
@@ -90,20 +89,32 @@ def registerUser():
     email = request.form['email']
     password = request.form['password']
     password2 = request.form['password2']
-    if password == password2:
+    
+    mycursor = mydb.cursor()
+    sqlUser = 'SELECT * FROM users WHERE email = %s'      
+    value = (email,)
+    mycursor.execute(sqlUser, value)
+    myresult = mycursor.fetchall()
+    print(myresult)
+    
+    if myresult == [] and password == password2:
       mycursor = mydb.cursor()
       sql = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
       val = (user, email, password)
       mycursor.execute(sql, val)
       mydb.commit()
       
-      session['user'] = email
+      mycursor = mydb.cursor()
       sqlUser = 'SELECT * FROM users WHERE email = %s'      
       value = (email,)
       mycursor.execute(sqlUser, value)
       myresult = mycursor.fetchall()
+      session['user'] = email
       session['id'] = myresult[0][0]
+
       return render_template("index.html", data=data, session = session)
+    else:
+      return redirect(url_for('index'))
 
 #Actualizar Reseña
 @app.route('/<id>/update/<id_resena>', methods=['GET', 'POST'])
