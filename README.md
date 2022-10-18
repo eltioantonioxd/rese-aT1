@@ -88,3 +88,8 @@ MYSQL_DATABASE=tarea1
 MYSQL_USER=user
 MYSQL_PASSWORD=password
 ```
+
+
+Las vistas se emplearon con flask mediante la función render_template que llama a los archivos templates, donde se encuentran los archivos html 
+
+![render_template](https://user-images.githubusercontent.com/91589175/196330759-dc00ad05-ed42-4d1c-b737-c7b5da4e305d.png)
