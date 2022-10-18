@@ -27,3 +27,7 @@ Para bajar la instancia utilice:
 ```
 docker-compose down
 ```
+*Recuerde emplear la rama master para clonar el repositorio, ya que es la más actualizada y funcional*
+
+# Explicación de Dockerfile Empleado
+
