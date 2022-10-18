@@ -31,7 +31,7 @@ docker-compose down
 
 # Explicación de Dockerfile empleado en Flask
 
-```
+```docker
 #Se selecciona la imagen de python, donde para obtener una versión más liviana del mismo se opta por alpine
 FROM python:3.7-alpine
 
