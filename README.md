@@ -80,4 +80,11 @@ services:
     env_file:
       - common.env
   ```
-
+  
+ Cabe mencionar que para el servicio de mysql se declararon las variables de entorno en un archivo nombrado common.env, donde se visualiza la siguiente información:
+```
+MYSQL_ROOT_PASSWORD=brayanyesteban
+MYSQL_DATABASE=tarea1
+MYSQL_USER=user
+MYSQL_PASSWORD=password
+```
