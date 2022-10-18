@@ -31,3 +31,4 @@ docker-compose down
 
 # Explicación de Dockerfile Empleado
 
+![dockerfile](https://user-images.githubusercontent.com/91589175/196328761-543b7c4f-dcd7-426f-9c3d-8180101f20a9.png)
