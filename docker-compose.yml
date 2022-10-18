@@ -1,14 +1,14 @@
 version: '3.3'
 
 services:
-  app:
+  flask:
     build: .
     container_name: app_flask
     restart: always
     depends_on:
       - mysql
     ports:
-      - "4000:4000"
+      - "5000:5000"
     volumes:
       - ./public:/app
 
@@ -22,3 +22,16 @@ services:
       -  ./backend:/var/lib/mysql
     env_file:
       - common.env
+    
+  ngnix:
+    build: ./front
+    container_name: nginx
+    restart: always
+    depends_on:
+      - flask
+      - mysql
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public/templates:/usr/share/nginx/html
+      - ./front/default.conf:/etc/nginx/templates

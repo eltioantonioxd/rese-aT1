@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request,session,redirect, url_for
 import requests
 import mysql.connector
+from waitress import serve
+
 
 
 mydb = mysql.connector.connect(
@@ -19,7 +21,7 @@ myresult = mycursor.fetchall()
 
 for x in myresult:
   print(x[1])
-  
+
 app = Flask(__name__)
 
 url = 'https://www.freetogame.com/api/games'
@@ -175,4 +177,5 @@ def specificGame(id):
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=4000, debug=True)
+    app.run(host="0.0.0.0", debug=True)
+    serve(app, host='0.0.0.0', port=5000)
