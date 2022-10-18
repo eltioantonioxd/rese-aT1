@@ -29,6 +29,23 @@ docker-compose down
 ```
 *Recuerde emplear la rama master para clonar el repositorio, ya que es la más actualizada y funcional*
 
-# Explicación de Dockerfile Empleado
+# Explicación de Dockerfile empleado en Flask
 
-![dockerfile](https://user-images.githubusercontent.com/91589175/196328761-543b7c4f-dcd7-426f-9c3d-8180101f20a9.png)
+```
+#Se selecciona la imagen de python, donde para obtener una versión más liviana del mismo se opta por alpine
+FROM python:3.7-alpine
+
+#Se establece un directorio de trabajo dentro del contenedor
+WORKDIR /app
+
+#Se copian los archivos asociados a la carpeta backend-flask hacia el contenedor
+COPY ./backend-flask .
+
+#Se instalan las dependencias necesarias para correr el proyecto; en este caso el archivo requirements.txt cuenta con los requerimientos
+RUN pip3 install -r requirements.txt
+
+CMD ["python3", "app.py"]
+```
+
+
+
