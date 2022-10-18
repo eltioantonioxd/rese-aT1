@@ -16,3 +16,14 @@ Levante el proyecto:
 ```
 docker-compose up
 ```
+
+Corrobore el estado de los contenedores:
+```
+docker ps
+```
+
+Para bajar la instancia utilice:
+
+```
+docker-compose down
+```
