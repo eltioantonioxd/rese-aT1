@@ -29,9 +29,9 @@ docker-compose down
 ```
 *Recuerde emplear la rama master para clonar el repositorio, ya que es la más actualizada y funcional*
 
-# Explicación de Dockerfile empleado en Flask
+# Explicación de Dockerfile empleado
 
-```docker
+```
 #Se selecciona la imagen de python, donde para obtener una versión más liviana del mismo se opta por alpine
 FROM python:3.7-alpine
 
@@ -47,5 +47,37 @@ RUN pip3 install -r requirements.txt
 CMD ["python3", "app.py"]
 ```
 
+# Explicación de Docker-compose empleado
 
+```
+#Se declara la versión de docker-compose a emplear
+version: '3.3'
+
+#Se declaran los servicios a utilizar
+services:
+
+  #Configuración del servicio flask, donde se contruye la imagen a partir del Dockerfile que esta ubicado al mismo nivel que el compose
+  flask: 
+    build: .
+    container_name: app_flask
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend-flask:/app
+
+  #Configuración del servicio MYSQL, donde se utiliza la imagen de docker hub directamente
+  mysql:
+    image: 'mysql:5.7.13'
+    container_name: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      -  ./bd-mysql:/var/lib/mysql
+    env_file:
+      - common.env
+  ```
 
