@@ -2,7 +2,7 @@ FROM python:3.7-alpine
 
 WORKDIR /app
 
-COPY ./public .
+COPY ./backend-flask .
 
 RUN pip3 install -r requirements.txt
 
