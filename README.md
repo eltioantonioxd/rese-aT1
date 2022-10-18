@@ -8,6 +8,10 @@
 - Docker
 - Bootstap
 
+Asimismo, se consumio una [API de videojuegos gratuidos](https://www.freetogame.com/api/games)
+
+
+
 Para comenzar, clone el repositorio:
 ```
 git clone https://github.com/eltioantonioxd/rese-aT1.git
